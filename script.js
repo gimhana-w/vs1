@@ -241,6 +241,33 @@ document.addEventListener('DOMContentLoaded', () => {
         whyChooseObserver.observe(whyChooseSection);
     }
 
+    // Products Section Animations
+    const productsSection = document.querySelector('.products-section');
+    const productCards = document.querySelectorAll('.product-card');
+
+    if (productsSection) {
+        const productsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Animate product cards with stagger effect
+                    if (productCards.length > 0) {
+                        productCards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('fade-in');
+                            }, 200 + (index * 100));
+                        });
+                    }
+                    productsObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px'
+        });
+
+        productsObserver.observe(productsSection);
+    }
+
     // Defer non-critical animations to improve initial load
     requestAnimationFrame(() => {
         // Add fade-in animation on scroll for other elements

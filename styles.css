@@ -2392,8 +2392,162 @@ body {
 }
 
 /* ============================================
+   Products Section
+   ============================================ */
+.products-section {
+    padding: var(--spacing-2xl) 0;
+    position: relative;
+    background: #0a1929;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+/* Network pattern background */
+.products-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.products-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.products-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.products-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: var(--spacing-md);
+}
+
+.products-subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-xl);
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.product-card {
+    text-align: center;
+    padding: var(--spacing-lg);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.product-card.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.product-icon-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    width: 140px;
+    height: 140px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Dashed circle around icon */
+.product-icon-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border: 2px dashed rgba(59, 130, 246, 0.6);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.product-icon-circle {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #1e3a8a;
+    border: 2px solid rgba(59, 130, 246, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(59, 130, 246, 1);
+    z-index: 2;
+    box-shadow: 
+        0 0 20px rgba(59, 130, 246, 0.4),
+        inset 0 0 20px rgba(59, 130, 246, 0.1);
+    transition: all 0.4s ease;
+}
+
+.product-card:hover .product-icon-circle {
+    transform: scale(1.1);
+    box-shadow: 
+        0 0 30px rgba(59, 130, 246, 0.6),
+        inset 0 0 30px rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 1);
+}
+
+.product-icon-circle svg {
+    width: 50px;
+    height: 50px;
+}
+
+.product-card h3 {
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.product-card p {
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+/* ============================================
    Responsive Design
    ============================================ */
+@media (max-width: 1024px) {
+    /* Products Section Tablet */
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-lg);
+    }
+}
+
 @media (max-width: 768px) {
     .nav-menu {
         position: fixed;
@@ -2558,6 +2712,32 @@ body {
 
     .why-stat-label {
         font-size: 0.9rem;
+    }
+
+    /* Products Section Mobile */
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-lg);
+    }
+
+    .product-icon-wrapper {
+        width: 120px;
+        height: 120px;
+    }
+
+    .product-icon-wrapper::before {
+        width: 120px;
+        height: 120px;
+    }
+
+    .product-icon-circle {
+        width: 85px;
+        height: 85px;
+    }
+
+    .product-icon-circle svg {
+        width: 40px;
+        height: 40px;
     }
 
     .why-choose-grid {
@@ -2728,6 +2908,32 @@ body {
 
     .why-stat-label {
         font-size: 0.85rem;
+    }
+
+    /* Products Section Small Mobile */
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .product-icon-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+
+    .product-icon-wrapper::before {
+        width: 100px;
+        height: 100px;
+    }
+
+    .product-icon-circle {
+        width: 70px;
+        height: 70px;
+    }
+
+    .product-icon-circle svg {
+        width: 35px;
+        height: 35px;
     }
 
     .why-card {
