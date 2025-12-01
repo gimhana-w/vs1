@@ -147,6 +147,18 @@ body {
     transform: translateY(-2px);
 }
 
+.logo-image {
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+    transition: all var(--transition-base);
+}
+
+.logo:hover .logo-image {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
 .logo-icon {
     width: 44px;
     height: 44px;
@@ -1062,14 +1074,11 @@ body {
 
 .title-line {
     display: block;
+    color: var(--text-primary);
 }
 
 .title-line.highlight {
-    background: linear-gradient(135deg, var(--vs-red) 0%, var(--vs-red-light) 30%, var(--one-blue-light) 70%, var(--one-blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 3s ease-in-out infinite;
+    color: var(--vs-red);
 }
 
 @keyframes shimmer {
@@ -1270,6 +1279,10 @@ body {
     color: #f9fafb;
 }
 
+.services-title .title-highlight {
+    color: var(--vs-red);
+}
+
 .services-subtitle {
     max-width: 720px;
     margin: 0 auto;
@@ -1281,6 +1294,7 @@ body {
     max-width: 1100px;
     margin: 0 auto;
     min-height: 560px; /* extra height to avoid card overlap */
+    overflow: visible;
 }
 
 .service-center {
@@ -1351,6 +1365,8 @@ body {
     align-items: center;
     text-align: center;
     gap: var(--spacing-sm);
+    z-index: 1;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, z-index 0.3s ease;
 }
 
 .service-node h3 {
@@ -1380,6 +1396,17 @@ body {
     box-shadow:
         0 0 24px rgba(248, 250, 252, 0.65),
         0 0 32px rgba(147, 51, 234, 0.7);
+    transition: all 0.3s ease;
+}
+
+.service-node:hover .service-icon {
+    border-color: rgba(248, 250, 252, 1);
+    box-shadow:
+        0 0 30px rgba(248, 250, 252, 1),
+        0 0 50px rgba(147, 51, 234, 1),
+        0 0 80px rgba(168, 85, 247, 0.8),
+        inset 0 0 20px rgba(147, 51, 234, 0.4);
+    transform: scale(1.1);
 }
 
 /* ============================================
@@ -1403,6 +1430,7 @@ body {
     top: 50%;            /* vertical center on left side */
     left: -10%;            /* horizontal distance from left edge */
     transform: translateY(-50%); /* keep vertically centered around its top value */
+    z-index: 2;
 }
 
 /* Node 3 - Bottom Left Service */
@@ -1422,6 +1450,7 @@ body {
     top: 50%;            /* vertical center on right side */
     right: -10%;           /* horizontal distance from right edge */
     transform: translateY(-50%); /* keep vertically centered */
+    z-index: 2;
 }
 
 /* Node 6 - Bottom Right Service */
@@ -1461,11 +1490,36 @@ body {
 .service-node-6 .service-connector { border-radius: 0 20px 20px 0; }
 
 .service-node:hover {
-    transform: translateY(-6px);
+    z-index: 10 !important;
     box-shadow:
         0 24px 60px rgba(15, 23, 42, 0.9),
-        0 0 36px rgba(147, 51, 234, 0.9);
-    border-color: rgba(248, 250, 252, 0.7);
+        0 0 48px rgba(147, 51, 234, 1),
+        0 0 80px rgba(168, 85, 247, 0.8),
+        0 0 120px rgba(59, 130, 246, 0.6),
+        inset 0 0 30px rgba(147, 51, 234, 0.3);
+    border-color: rgba(248, 250, 252, 1);
+    border-width: 2px;
+}
+
+.service-node:not(.service-node-2):not(.service-node-5):hover {
+    transform: translateY(-6px);
+}
+
+.service-node-2:hover {
+    transform: translateY(calc(-50% - 6px)) !important;
+}
+
+.service-node-5:hover {
+    transform: translateY(calc(-50% - 6px)) !important;
+}
+
+.service-node:hover .service-connector {
+    opacity: 1;
+    background: linear-gradient(90deg, rgba(248, 250, 252, 1), rgba(147, 51, 234, 0.8));
+    box-shadow: 
+        0 0 20px rgba(248, 250, 252, 1),
+        0 0 40px rgba(147, 51, 234, 0.8),
+        0 0 60px rgba(168, 85, 247, 0.6);
 }
 
 .values-header {
@@ -1485,6 +1539,10 @@ body {
     margin: 1rem 0;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     line-height: 1.2;
+}
+
+.values-header h2 .title-highlight {
+    color: var(--vs-red);
 }
 
 .values-header p {
@@ -1760,10 +1818,11 @@ body {
     font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 800;
     margin-bottom: var(--spacing-md);
-    background: linear-gradient(135deg, var(--vs-red) 0%, var(--one-blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
+}
+
+.about-title .title-highlight {
+    color: var(--vs-red);
 }
 
 .about-subtitle {
@@ -2058,10 +2117,6 @@ body {
 
 .why-choose-title .title-highlight {
     color: var(--vs-red);
-    background: linear-gradient(135deg, var(--vs-red) 0%, var(--vs-red-light) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
 .why-choose-subtitle {
@@ -2590,6 +2645,10 @@ body {
     margin-bottom: var(--spacing-md);
 }
 
+.products-title .title-highlight {
+    color: var(--vs-red);
+}
+
 .products-subtitle {
     font-size: clamp(1rem, 2vw, 1.25rem);
     color: rgba(255, 255, 255, 0.8);
@@ -2992,6 +3051,10 @@ body {
         min-height: 70px;
     }
 
+    .logo-image {
+        height: 36px;
+    }
+
     .logo-icon {
         width: 40px;
         height: 40px;
@@ -3182,6 +3245,18 @@ body {
     align-items: center;
     gap: var(--spacing-sm);
     margin-bottom: var(--spacing-md);
+}
+
+.footer-logo-image {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    transition: all var(--transition-base);
+}
+
+.footer-logo:hover .footer-logo-image {
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
 .footer-logo .logo-icon {
