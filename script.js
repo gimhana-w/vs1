@@ -294,6 +294,92 @@ document.addEventListener('DOMContentLoaded', () => {
         channelsObserver.observe(channelsSection);
     }
 
+    // News and Events Section Animations
+    const newsEventsSection = document.querySelector('.news-events-section');
+    const newsEventsHeader = document.querySelector('.news-events-header');
+    const newsCards = document.querySelectorAll('.news-card');
+
+    if (newsEventsSection) {
+        const newsEventsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (newsEventsHeader) {
+                        setTimeout(() => {
+                            newsEventsHeader.classList.add('fade-in');
+                        }, 200);
+                    }
+                    if (newsCards.length > 0) {
+                        newsCards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('fade-in');
+                            }, 400 + (index * 100));
+                        });
+                    }
+                    newsEventsObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px'
+        });
+        newsEventsObserver.observe(newsEventsSection);
+    }
+
+    // CTA Section Animations
+    const ctaSection = document.querySelector('.cta-section');
+    const ctaContent = document.querySelector('.cta-content');
+
+    if (ctaSection) {
+        const ctaObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (ctaContent) {
+                        setTimeout(() => {
+                            ctaContent.classList.add('fade-in');
+                        }, 200);
+                    }
+                    ctaObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px'
+        });
+        ctaObserver.observe(ctaSection);
+    }
+
+    // Subscription Form Handler
+    const subscribeForm = document.getElementById('subscribeForm');
+    const subscribeEmail = document.getElementById('subscribeEmail');
+
+    if (subscribeForm) {
+        subscribeForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = subscribeEmail.value.trim();
+            
+            if (email && isValidEmail(email)) {
+                // Show success alert
+                alert(`Thank you for subscribing!\n\nWe've sent a confirmation email to:\n${email}\n\nYou'll now receive our latest news and updates.`);
+                
+                // Reset form
+                subscribeForm.reset();
+                
+                // Optional: Here you would typically send the email to your backend
+                // Example: fetch('/api/subscribe', { method: 'POST', body: JSON.stringify({ email }) })
+            } else {
+                alert('Please enter a valid email address.');
+                subscribeEmail.focus();
+            }
+        });
+    }
+
+    // Email validation helper
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     // Defer non-critical animations to improve initial load
     requestAnimationFrame(() => {
         // Add fade-in animation on scroll for other elements
