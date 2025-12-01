@@ -297,6 +297,7 @@ body {
     opacity: 1;
     transition: opacity 0.8s ease, transform 0.8s ease;
     z-index: 1;
+    will-change: opacity, transform;
 }
 
 .section-slide.fade-out {
@@ -1188,415 +1189,297 @@ body {
 }
 
 /* ============================================
-   Our Values Section with Wheel Design
+   Values Section (New Design)
    ============================================ */
-   .values-section {
-    padding: var(--spacing-2xl) 0;
+.values {
+    background: linear-gradient(135deg, #0a1f35 0%, var(--primary-blue) 25%, #015a8a 50%, #026ba0 75%, rgba(187, 20, 26, 0.4) 90%, rgba(187, 20, 26, 0.2) 100%);
+    color: var(--white);
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
 }
 
-.values-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: var(--spacing-xl) var(--spacing-lg);
+.values::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 15% 25%, rgba(1, 61, 101, 0.3) 0%, transparent 60%),
+        radial-gradient(circle at 85% 75%, rgba(1, 61, 101, 0.2) 0%, transparent 60%),
+        radial-gradient(circle at 50% 50%, rgba(187, 20, 26, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.values-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    min-height: 500px;
 }
 
 .values-header {
-    text-align: center;
-    margin-bottom: var(--spacing-2xl);
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.values-header.fade-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.values-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 800;
-    margin-bottom: var(--spacing-md);
-    background: linear-gradient(135deg, var(--vs-red) 0%, var(--one-blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.values-subtitle {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: var(--text-secondary);
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.7;
-}
-
-.values-wheel {
+    text-align: left;
     position: relative;
-    width: 100%;
-    max-width: 1200px;
-    height: 600px;
-    margin: 0 auto;
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 1s ease, transform 1s ease;
-}
-
-.values-wheel.fade-in {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.wheel-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 180px;
-    height: 180px;
-    z-index: 10;
-    transition: transform 0.3s ease-out;
-    will-change: transform;
-}
-
-.center-icon {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 50%;
-    border: 2px solid rgba(59, 130, 246, 0.3);
-    box-shadow:
-        0 0 40px rgba(230, 57, 70, 0.3),
-        0 0 40px rgba(59, 130, 246, 0.3),
-        inset 0 0 40px rgba(59, 130, 246, 0.1);
-    animation: centerPulse 3s ease-in-out infinite;
-}
-
-.center-icon svg {
-    width: 80%;
-    height: 80%;
-}
-
-@keyframes centerPulse {
-    0%, 100% {
-        box-shadow:
-            0 0 40px rgba(230, 57, 70, 0.3),
-            0 0 40px rgba(59, 130, 246, 0.3),
-            inset 0 0 40px rgba(59, 130, 246, 0.1);
-    }
-    50% {
-        box-shadow:
-            0 0 60px rgba(230, 57, 70, 0.5),
-            0 0 60px rgba(59, 130, 246, 0.5),
-            inset 0 0 60px rgba(59, 130, 246, 0.2);
-    }
-}
-
-.wheel-item {
-    position: absolute;
+    z-index: 2;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    padding-left: 2rem;
+}
+
+.values-header h2 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--white);
+    margin: 1rem 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    line-height: 1.2;
+}
+
+.values-header p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-top: 1rem;
+}
+
+/* 3D Carousel Animation */
+.values-carousel-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 2rem 0;
+    min-height: 500px;
+    display: flex;
     align-items: center;
-    opacity: 0;
-    animation: wheelItemFadeIn 0.8s ease forwards;
-    width: 250px;
+    justify-content: flex-start;
 }
 
-/* ============================================
-   WHEEL ITEM POSITIONING - MANUAL ADJUSTMENT GUIDE
-   ============================================
-   
-   TO ADJUST POSITION:
-   - Change 'left' or 'right' values to move horizontally (0% = left edge, 100% = right edge)
-   - Change 'top' or 'bottom' values to move vertically (0% = top edge, 100% = bottom edge)
-   - Change 'transform' translate values for fine-tuning
-   - For diagonal items, adjust both left AND top together
-   ============================================ */
-
-/* ============================================
-   ITEM 1: TOP ITEM (Excellence)
-   ============================================
-   CURRENT POSITION: Top center
-   TO MOVE: Adjust 'left' (horizontal) and 'top' (vertical distance from top)
-   ============================================ */
-.wheel-item[data-position="top"] {
-    left: 50%;          /* ⬅️ CHANGE THIS: Move left/right (0% = left, 100% = right, 50% = center) */
-    top: -15%;           /* ⬅️ CHANGE THIS: Distance from top (0% = top, 100% = bottom) */
-    transform: translate(-50%, 0);  /* ⬅️ FINE-TUNE: First value = horizontal offset, second = vertical offset */
-    align-items: center;
-    animation-delay: 0.2s;
+.icon-cards {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 400px;
+    perspective: 1200px;
+    margin: 0 auto;
 }
 
-/* ============================================
-   ITEM 2: TOP-RIGHT DIAGONAL (Quality)
-   ============================================
-   CURRENT POSITION: Top-right diagonal
-   TO MOVE: Adjust 'left' (horizontal) and 'top' (vertical)
-   ============================================ */
-.wheel-item[data-position="diagonal-top-right"] {
-    left: 72%;          /* ⬅️ CHANGE THIS: Move left/right (increase = more right, decrease = more left) */
-    top: 25%;           /* ⬅️ CHANGE THIS: Distance from top (increase = lower, decrease = higher) */
-    transform: translate(-50%, -50%);  /* ⬅️ FINE-TUNE: Adjust both values for precise positioning */
-    align-items: flex-end;
-    animation-delay: 0.4s;
+.icon-cards__content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: translateZ(-200px) rotateY(0);
+    animation: carousel 15s infinite cubic-bezier(1, 0.015, 0.295, 1.225) forwards;
 }
 
-/* ============================================
-   ITEM 3: RIGHT ITEM (Innovation)
-   ============================================
-   CURRENT POSITION: Right center
-   TO MOVE: Adjust 'right' (distance from right edge) and 'top' (vertical)
-   ============================================ */
-.wheel-item[data-position="right"] {
-    right: 10%;         /* ⬅️ CHANGE THIS: Distance from right edge (0% = right edge, 100% = left edge) */
-    left: auto;
-    top: 50%;           /* ⬅️ CHANGE THIS: Vertical position (0% = top, 100% = bottom, 50% = center) */
-    transform: translate(0, -50%);  /* ⬅️ FINE-TUNE: First value = horizontal offset, second = vertical offset */
-    align-items: flex-end;
-    animation-delay: 0.6s;
+.icon-cards:hover .icon-cards__content {
+    animation-play-state: paused;
 }
 
-/* ============================================
-   ITEM 4: BOTTOM ITEM (Reliability)
-   ============================================
-   CURRENT POSITION: Bottom center
-   TO MOVE: Adjust 'left' (horizontal) and 'bottom' (distance from bottom)
-   ============================================ */
-.wheel-item[data-position="bottom"] {
-    left: 50%;          /* ⬅️ CHANGE THIS: Move left/right (0% = left, 100% = right, 50% = center) */
-    bottom: 10%;        /* ⬅️ CHANGE THIS: Distance from bottom (0% = bottom, 100% = top) */
-    top: auto;
-    transform: translate(-50%, 0);  /* ⬅️ FINE-TUNE: First value = horizontal offset, second = vertical offset */
-    align-items: center;
-    animation-delay: 0.8s;
+.icon-cards__item {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 320px;
+    height: 380px;
+    margin-left: -160px;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
 }
 
-/* ============================================
-   ITEM 5: LEFT ITEM (Partnership)
-   ============================================
-   CURRENT POSITION: Left center
-   TO MOVE: Adjust 'left' (distance from left edge) and 'top' (vertical)
-   ============================================ */
-.wheel-item[data-position="left"] {
-    left: 10%;          /* ⬅️ CHANGE THIS: Distance from left edge (0% = left edge, 100% = right edge) */
-    top: 50%;           /* ⬅️ CHANGE THIS: Vertical position (0% = top, 100% = bottom, 50% = center) */
-    transform: translate(0, -50%);  /* ⬅️ FINE-TUNE: First value = horizontal offset, second = vertical offset */
-    align-items: flex-start;
-    animation-delay: 1s;
+.icon-cards__item:nth-child(1) {
+    transform: rotateY(0deg) translateZ(200px);
 }
 
-@keyframes wheelItemFadeIn {
-    to {
-        opacity: 1;
+.icon-cards__item:nth-child(2) {
+    transform: rotateY(72deg) translateZ(200px);
+}
+
+.icon-cards__item:nth-child(3) {
+    transform: rotateY(144deg) translateZ(200px);
+}
+
+.icon-cards__item:nth-child(4) {
+    transform: rotateY(216deg) translateZ(200px);
+}
+
+.icon-cards__item:nth-child(5) {
+    transform: rotateY(288deg) translateZ(200px);
+}
+
+.icon-cards__item .value-card {
+    pointer-events: auto;
+}
+
+.icon-cards__item .value-card:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+@keyframes carousel {
+    0%, 15% {
+        transform: translateZ(-200px) rotateY(0deg);
+    }
+    20%, 35% {
+        transform: translateZ(-200px) rotateY(-72deg);
+    }
+    40%, 55% {
+        transform: translateZ(-200px) rotateY(-144deg);
+    }
+    60%, 75% {
+        transform: translateZ(-200px) rotateY(-216deg);
+    }
+    80%, 95% {
+        transform: translateZ(-200px) rotateY(-288deg);
+    }
+    100% {
+        transform: translateZ(-200px) rotateY(-360deg);
     }
 }
 
-.wheel-icon {
-    width: 80px;
-    height: 80px;
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.value-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 0;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+}
+
+.value-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.value-card:hover::before {
+    opacity: 1;
+}
+
+.value-card:hover {
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.icon-cards__item .value-card:hover {
+    transform: scale(1.05) translateZ(20px);
+}
+
+.value-card-header {
+    padding: 2rem 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
     background: rgba(255, 255, 255, 0.05);
+}
+
+.value-icon-box {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
-    border-radius: 50%;
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid rgba(59, 130, 246, 0.3);
-    color: var(--one-blue);
-    box-shadow:
-        0 0 20px rgba(59, 130, 246, 0.3),
-        inset 0 0 20px rgba(59, 130, 246, 0.1);
-    transition: all var(--transition-base);
-    position: relative;
-    z-index: 5;
-    margin: var(--spacing-md) 0;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.wheel-item:hover .wheel-icon {
-    transform: scale(1.1);
-    border-color: var(--vs-red);
-    color: var(--vs-red);
-    box-shadow:
-        0 0 30px rgba(230, 57, 70, 0.5),
-        inset 0 0 30px rgba(230, 57, 70, 0.2);
+.value-card:hover .value-icon-box {
+    transform: rotate(-10deg) scale(1.1);
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-/* Icon colors - alternating for balance */
-.wheel-item[data-position="top"] .wheel-icon,
-.wheel-item[data-position="bottom"] .wheel-icon {
-    border-color: var(--one-blue);
-    color: var(--one-blue);
-}
-
-.wheel-item[data-position="left"] .wheel-icon,
-.wheel-item[data-position="right"] .wheel-icon,
-.wheel-item[data-position="diagonal-top-right"] .wheel-icon {
-    border-color: var(--vs-red);
-    color: var(--vs-red);
-}
-
-.wheel-icon svg {
-    width: 50%;
-    height: 50%;
-}
-
-/* Blue lines connecting from center to items - Straight cardinal directions */
-.wheel-line {
-    position: absolute;
-    z-index: 1;
-    background: rgba(59, 130, 246, 0.8);
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-    pointer-events: none;
-    left: 50%;
-    top: 50%;
-    transform-origin: center center;
-}
-
-/* ============================================
-   CONNECTION LINES - ADJUST IF ITEMS MOVE
-   ============================================
-   These lines connect from center to each item.
-   Adjust 'width'/'height' for line length.
-   Adjust 'transform' rotation for diagonal lines.
-   ============================================ */
-
-/* Line to TOP item - vertical up */
-.wheel-item[data-position="top"] .wheel-line {
-    width: 2px;
-    height: 200px;      /* ⬅️ CHANGE THIS: Line length (increase = longer line) */
-    transform: translate(-50%, -100%);
-    background: linear-gradient(
-        to top,
-        rgba(59, 130, 246, 0.8),
-        rgba(59, 130, 246, 0.4),
-        transparent
-    );
-}
-
-/* Line to TOP-RIGHT diagonal item */
-.wheel-item[data-position="diagonal-top-right"] .wheel-line {
-    width: 220px;       /* ⬅️ CHANGE THIS: Line length (increase = longer line) */
-    height: 2px;
-    transform: translate(-50%, -50%) rotate(-54deg);  /* ⬅️ CHANGE THIS: Rotate angle (negative = counter-clockwise) */
-    transform-origin: left center;
-    background: linear-gradient(
-        to right,
-        rgba(59, 130, 246, 0.8),
-        rgba(59, 130, 246, 0.4),
-        transparent
-    );
-}
-
-/* Line to RIGHT item - horizontal right */
-.wheel-item[data-position="right"] .wheel-line {
-    width: 200px;       /* ⬅️ CHANGE THIS: Line length (increase = longer line) */
-    height: 2px;
-    transform: translate(0, -50%);
-    background: linear-gradient(
-        to right,
-        rgba(59, 130, 246, 0.8),
-        rgba(59, 130, 246, 0.4),
-        transparent
-    );
-}
-
-/* Line to BOTTOM item - vertical down */
-.wheel-item[data-position="bottom"] .wheel-line {
-    width: 2px;
-    height: 200px;      /* ⬅️ CHANGE THIS: Line length (increase = longer line) */
-    transform: translate(-50%, 0);
-    background: linear-gradient(
-        to bottom,
-        rgba(59, 130, 246, 0.8),
-        rgba(59, 130, 246, 0.4),
-        transparent
-    );
-}
-
-/* Line to LEFT item - horizontal left */
-.wheel-item[data-position="left"] .wheel-line {
-    width: 200px;       /* ⬅️ CHANGE THIS: Line length (increase = longer line) */
-    height: 2px;
-    transform: translate(-100%, -50%);
-    background: linear-gradient(
-        to left,
-        rgba(59, 130, 246, 0.8),
-        rgba(59, 130, 246, 0.4),
-        transparent
-    );
-}
-
-/* Content */
-.wheel-content-top,
-.wheel-content-bottom {
-    max-width: 220px;
-    text-align: center;
-}
-
-/* Text alignment based on position */
-.wheel-item[data-position="top"] .wheel-content-top,
-.wheel-item[data-position="top"] .wheel-content-bottom {
-    text-align: center;
-}
-
-.wheel-item[data-position="bottom"] .wheel-content-top,
-.wheel-item[data-position="bottom"] .wheel-content-bottom {
-    text-align: center;
-}
-
-.wheel-item[data-position="left"] .wheel-content-top,
-.wheel-item[data-position="left"] .wheel-content-bottom {
-    text-align: left;
-}
-
-.wheel-item[data-position="right"] .wheel-content-top,
-.wheel-item[data-position="right"] .wheel-content-bottom,
-.wheel-item[data-position="diagonal-top-right"] .wheel-content-top,
-.wheel-item[data-position="diagonal-top-right"] .wheel-content-bottom {
-    text-align: right;
-}
-
-.wheel-item[data-position="top"] .wheel-content-bottom p,
-.wheel-item[data-position="diagonal-top-right"] .wheel-content-bottom p {
-    display: none;
-}
-
-.wheel-item[data-position="bottom"] .wheel-content-top p,
-.wheel-item[data-position="left"] .wheel-content-bottom p,
-.wheel-item[data-position="right"] .wheel-content-bottom p {
-    display: none;
-}
-
-.wheel-item[data-position="top"] .wheel-content-top p,
-.wheel-item[data-position="diagonal-top-right"] .wheel-content-top p,
-.wheel-item[data-position="bottom"] .wheel-content-bottom p,
-.wheel-item[data-position="left"] .wheel-content-top p,
-.wheel-item[data-position="right"] .wheel-content-top p {
+.value-icon {
+    font-size: 2.5rem;
     display: block;
-    margin-top: var(--spacing-xs);
+    filter: brightness(0) invert(1);
+    transition: transform 0.4s ease;
 }
 
-.wheel-content-top h3,
-.wheel-content-bottom h3 {
-    font-size: 1.5rem;
+.value-card:hover .value-icon {
+    transform: scale(1.15);
+}
+
+.value-number {
+    font-size: 4rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.15);
+    line-height: 1;
+    transition: all 0.4s ease;
+}
+
+.value-card:hover .value-number {
+    color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+
+.value-card-body {
+    padding: 0 2rem 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.value-card-body h3 {
+    font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: var(--spacing-xs);
-    background: linear-gradient(135deg, var(--vs-red) 0%, var(--one-blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.wheel-content-top p,
-.wheel-content-bottom p {
+.value-card:hover .value-card-body h3 {
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    transform: translateX(3px);
+}
+
+.value-card-body p {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
     font-size: 0.95rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
+    margin: 0;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
-
 /* ============================================
    About Section with Parallax Effect
    ============================================ */
@@ -1787,20 +1670,6 @@ body {
     color: var(--vs-red);
 }
 
-/* Parallax Center Wheel Icon - Moves down when scrolling to About section */
-.wheel-center.parallax-active {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 999;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.wheel-center.parallax-move {
-    transform: translate(-50%, calc(-50% + 300px));
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
 
 /* ============================================
    Why Choose Us Section - Unique Design
@@ -2401,16 +2270,6 @@ body {
         height: 6px;
     }
 
-    /* Values Section Mobile */
-    .values-wheel {
-        height: 500px;
-        max-width: 100%;
-    }
-
-    .wheel-center {
-        width: 140px;
-        height: 140px;
-    }
 
     /* About Section Mobile */
     .about-grid {
@@ -2574,67 +2433,6 @@ body {
         opacity: 0.5;
     }
 
-    /* Values Section Small Mobile */
-    .values-wheel {
-        height: 450px;
-    }
-
-    .wheel-center {
-        width: 100px;
-        height: 100px;
-    }
-
-    .wheel-item[data-position="top"] {
-        top: 3%;
-    }
-
-    .wheel-item[data-position="diagonal-top-right"] {
-        left: 65%;
-        top: 15%;
-    }
-
-    .wheel-item[data-position="bottom"] {
-        bottom: 3%;
-    }
-
-    .wheel-item[data-position="left"] {
-        left: 3%;
-    }
-
-    .wheel-item[data-position="right"] {
-        right: 3%;
-    }
-
-    .wheel-item[data-position="top"] .wheel-line,
-    .wheel-item[data-position="bottom"] .wheel-line {
-        height: 100px;
-    }
-
-    .wheel-item[data-position="left"] .wheel-line,
-    .wheel-item[data-position="right"] .wheel-line {
-        width: 100px;
-    }
-
-    .wheel-item[data-position="diagonal-top-right"] .wheel-line {
-        width: 120px;
-    }
-
-    .wheel-icon {
-        width: 50px;
-        height: 50px;
-    }
-
-    .wheel-content {
-        max-width: 140px;
-    }
-
-    .wheel-content h3 {
-        font-size: 1.1rem;
-    }
-
-    .wheel-content p {
-        font-size: 0.8rem;
-    }
 
     /* About Section Small Mobile */
     .about-grid {

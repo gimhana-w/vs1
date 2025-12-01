@@ -18,11 +18,12 @@ if (mobileMenuToggle && navMenu) {
     });
 }
 
-// Navbar scroll effect
+// Navbar scroll effect - Optimized with requestAnimationFrame
 const navbar = document.querySelector('.navbar');
 let lastScroll = 0;
+let navbarTicking = false;
 
-window.addEventListener('scroll', () => {
+const updateNavbar = () => {
     const currentScroll = window.pageYOffset;
 
     if (currentScroll > 100) {
@@ -32,7 +33,15 @@ window.addEventListener('scroll', () => {
     }
 
     lastScroll = currentScroll;
-});
+    navbarTicking = false;
+};
+
+window.addEventListener('scroll', () => {
+    if (!navbarTicking) {
+        window.requestAnimationFrame(updateNavbar);
+        navbarTicking = true;
+    }
+}, { passive: true });
 
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -52,32 +61,35 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Slide-style scroll animations
+// Slide-style scroll animations - Optimized for performance
 document.addEventListener('DOMContentLoaded', () => {
+    // Use requestAnimationFrame for better performance
+    let ticking = false;
     const sections = document.querySelectorAll('.section-slide');
     let currentSection = 0;
 
-    // Initialize sections
-    sections.forEach((section, index) => {
-        if (index === 0) {
-            section.classList.add('fade-in');
-            section.classList.remove('fade-out');
-        } else {
-            section.classList.add('fade-out');
-            section.classList.remove('fade-in');
-        }
-    });
+    // Initialize sections with minimal DOM manipulation
+    if (sections.length > 0) {
+        const firstSection = sections[0];
+        firstSection.classList.add('fade-in');
+        firstSection.classList.remove('fade-out');
+        
+        // Defer other sections initialization
+        requestAnimationFrame(() => {
+            for (let i = 1; i < sections.length; i++) {
+                sections[i].classList.add('fade-out');
+                sections[i].classList.remove('fade-in');
+            }
+        });
+    }
 
-    // Handle scroll for slide transitions
-    let isScrolling = false;
-    window.addEventListener('scroll', () => {
-        if (isScrolling) return;
-        isScrolling = true;
-
+    // Optimized scroll handler with requestAnimationFrame
+    const handleScroll = () => {
         const scrollPosition = window.pageYOffset;
         const windowHeight = window.innerHeight;
         
-        sections.forEach((section, index) => {
+        for (let i = 0; i < sections.length; i++) {
+            const section = sections[i];
             const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
             const sectionCenter = sectionTop + (sectionHeight / 2);
@@ -85,113 +97,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Check if section is in viewport center
             if (scrollCenter >= sectionTop && scrollCenter < sectionTop + sectionHeight) {
-                // Fade in current section
-                section.classList.remove('fade-out');
-                section.classList.add('fade-in');
-                currentSection = index;
-
-                // Fade out other sections
-                sections.forEach((otherSection, otherIndex) => {
-                    if (otherIndex !== index) {
-                        otherSection.classList.remove('fade-in');
-                        otherSection.classList.add('fade-out');
+                if (currentSection !== i) {
+                    // Fade in current section
+                    section.classList.remove('fade-out');
+                    section.classList.add('fade-in');
+                    
+                    // Fade out previous section
+                    if (sections[currentSection]) {
+                        sections[currentSection].classList.remove('fade-in');
+                        sections[currentSection].classList.add('fade-out');
                     }
-                });
+                    
+                    currentSection = i;
+                }
+                break; // Exit early once we find the active section
             }
-        });
+        }
+        
+        ticking = false;
+    };
 
-        setTimeout(() => {
-            isScrolling = false;
-        }, 100);
-    });
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(handleScroll);
+            ticking = true;
+        }
+    }, { passive: true });
 
-    // Initialize Values Section Animations
-    const valuesHeader = document.querySelector('.values-header');
-    const valuesWheel = document.querySelector('.values-wheel');
-
-    if (valuesHeader && valuesWheel) {
-        const valuesObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (entry.target === valuesHeader) {
-                        setTimeout(() => {
-                            valuesHeader.classList.add('fade-in');
-                        }, 200);
-                    }
-                    if (entry.target === valuesWheel) {
-                        setTimeout(() => {
-                            valuesWheel.classList.add('fade-in');
-                        }, 400);
-                    }
-                }
-            });
-        }, {
-            threshold: 0.2,
-            rootMargin: '0px'
-        });
-
-        valuesObserver.observe(valuesHeader);
-        valuesObserver.observe(valuesWheel);
-    }
-
-    // Parallax Effect - Center Wheel Icon Moves Down to Focus on About Section
-    const centerWheel = document.querySelector('.wheel-center');
-    const aboutSection = document.querySelector('.about-section');
-    const valuesSection = document.querySelector('.values-section');
-
-    if (centerWheel && aboutSection && valuesSection) {
-        let isParallaxActive = false;
-
-        // Function to handle parallax scroll
-        const handleParallaxScroll = () => {
-            const scrollPosition = window.pageYOffset;
-            const windowHeight = window.innerHeight;
-            const valuesSectionBottom = valuesSection.offsetTop + valuesSection.offsetHeight;
-            const aboutSectionTop = aboutSection.offsetTop;
-            const aboutSectionHeight = aboutSection.offsetHeight;
-
-            // Calculate when to start parallax (when About section starts coming into view)
-            const parallaxStartPoint = valuesSectionBottom - windowHeight * 0.5;
-            const parallaxEndPoint = aboutSectionTop + aboutSectionHeight * 0.3;
-
-            if (scrollPosition >= parallaxStartPoint && scrollPosition <= parallaxEndPoint) {
-                if (!isParallaxActive) {
-                    isParallaxActive = true;
-                    centerWheel.classList.add('parallax-active');
-                }
-
-                // Calculate progress (0 to 1) between start and end points
-                const progress = Math.min(1, (scrollPosition - parallaxStartPoint) / (parallaxEndPoint - parallaxStartPoint));
-                
-                // Move the wheel down gradually (max 300px down)
-                const moveDistance = progress * 300;
-                centerWheel.style.transform = `translate(-50%, calc(-50% + ${moveDistance}px))`;
-
-                // Scale down slightly as it moves
-                const scale = 1 - (progress * 0.2);
-                centerWheel.style.transform += ` scale(${scale})`;
-
-            } else if (scrollPosition > parallaxEndPoint) {
-                // Keep it moved when fully in About section
-                if (isParallaxActive) {
-                    centerWheel.classList.add('parallax-move');
-                }
-            } else {
-                // Reset when scrolling back up
-                if (isParallaxActive) {
-                    isParallaxActive = false;
-                    centerWheel.classList.remove('parallax-active', 'parallax-move');
-                    centerWheel.style.transform = 'translate(-50%, -50%) scale(1)';
-                }
-            }
-        };
-
-        // Listen to scroll events
-        window.addEventListener('scroll', handleParallaxScroll, { passive: true });
-        handleParallaxScroll(); // Initial check
-    }
 
     // About Section Animations
+    const aboutSection = document.querySelector('.about-section');
     const aboutHeader = document.querySelector('.about-header');
     const aboutCards = document.querySelectorAll('.about-card');
     const aboutText = document.querySelector('.about-text');
@@ -273,27 +208,31 @@ document.addEventListener('DOMContentLoaded', () => {
         whyChooseObserver.observe(whyChooseSection);
     }
 
-    // Add fade-in animation on scroll for other elements
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+    // Defer non-critical animations to improve initial load
+    requestAnimationFrame(() => {
+        // Add fade-in animation on scroll for other elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target); // Stop observing once animated
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for fade-in effect
+        const animatedElements = document.querySelectorAll('.fade-in:not(.section-slide)');
+        animatedElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
         });
-    }, observerOptions);
-
-    // Observe elements for fade-in effect
-    const animatedElements = document.querySelectorAll('.fade-in:not(.section-slide)');
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
     });
 });
