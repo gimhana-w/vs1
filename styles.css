@@ -291,18 +291,33 @@ body {
 .section-slide {
     position: relative;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     opacity: 1;
     transition: opacity 0.8s ease, transform 0.8s ease;
     z-index: 1;
     will-change: opacity, transform;
 }
 
+/* Default flex layout for most sections */
+.section-slide:not(.values) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .section-slide.fade-out {
     opacity: 0;
     transform: translateY(50px);
+}
+
+/* Ensure values section properly fades with slide effect */
+.values.section-slide.fade-out {
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.values.section-slide.fade-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .section-slide.fade-in {
@@ -1192,11 +1207,13 @@ body {
    Values Section (New Design)
    ============================================ */
 .values {
-    background: linear-gradient(135deg, #0a1f35 0%, var(--primary-blue) 25%, #015a8a 50%, #026ba0 75%, rgba(187, 20, 26, 0.4) 90%, rgba(187, 20, 26, 0.2) 100%);
+    background: #000000;
     color: var(--white);
     padding: 100px 0;
     position: relative;
     overflow: hidden;
+    /* Slide effect integration - min-height for slide effect */
+    min-height: 100vh;
 }
 
 .values::before {
@@ -1221,6 +1238,7 @@ body {
     position: relative;
     z-index: 2;
     min-height: 500px;
+    width: 100%;
 }
 
 .values-header {
