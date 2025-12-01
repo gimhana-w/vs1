@@ -178,6 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const whyChooseSection = document.querySelector('.why-choose-section');
     const whyChooseHeader = document.querySelector('.why-choose-header');
     const whyCards = document.querySelectorAll('.why-card, .why-stat-card');
+    const whyStatNumbers = document.querySelectorAll('.why-stat-number');
 
     if (whyChooseSection) {
         const whyChooseObserver = new IntersectionObserver((entries) => {
@@ -196,6 +197,38 @@ document.addEventListener('DOMContentLoaded', () => {
                             setTimeout(() => {
                                 card.classList.add('fade-in');
                             }, 400 + (index * 100));
+                        });
+                    }
+
+                    // Number count-up effect for stats
+                    if (whyStatNumbers.length > 0) {
+                        whyStatNumbers.forEach(stat => {
+                            const target = parseInt(stat.getAttribute('data-target'), 10);
+                            if (isNaN(target)) return;
+
+                            // Avoid re-animating if already done
+                            if (stat.dataset.animated === 'true') return;
+                            stat.dataset.animated = 'true';
+
+                            const suffix = stat.textContent.replace(/[0-9]/g, '') || '+';
+                            const duration = 1500;
+                            const startTime = performance.now();
+
+                            const animate = (currentTime) => {
+                                const elapsed = currentTime - startTime;
+                                const progress = Math.min(elapsed / duration, 1);
+                                const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+                                const currentValue = Math.floor(eased * target);
+                                stat.textContent = `${currentValue}${suffix}`;
+
+                                if (progress < 1) {
+                                    requestAnimationFrame(animate);
+                                } else {
+                                    stat.textContent = `${target}${suffix}`;
+                                }
+                            };
+
+                            requestAnimationFrame(animate);
                         });
                     }
                 }
