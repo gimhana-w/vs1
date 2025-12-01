@@ -268,6 +268,32 @@ document.addEventListener('DOMContentLoaded', () => {
         productsObserver.observe(productsSection);
     }
 
+    // Channels Section Animations
+    const channelsSection = document.querySelector('.channels-section');
+    const channelCards = document.querySelectorAll('.channel-card');
+
+    if (channelsSection) {
+        const channelsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (channelCards.length > 0) {
+                        channelCards.forEach((card, index) => {
+                            setTimeout(() => {
+                                card.classList.add('fade-in');
+                            }, 200 + (index * 120));
+                        });
+                    }
+                    channelsObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px'
+        });
+
+        channelsObserver.observe(channelsSection);
+    }
+
     // Defer non-critical animations to improve initial load
     requestAnimationFrame(() => {
         // Add fade-in animation on scroll for other elements
@@ -295,4 +321,10 @@ document.addEventListener('DOMContentLoaded', () => {
             observer.observe(el);
         });
     });
+
+    // Set current year in footer
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+        currentYearElement.textContent = new Date().getFullYear();
+    }
 });
