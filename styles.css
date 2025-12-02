@@ -3180,6 +3180,8 @@ body {
         gap: var(--spacing-lg);
         transition: left var(--transition-base);
         border-top: 1px solid var(--border-color);
+        z-index: 999;
+        overflow-y: auto;
     }
 
     .nav-menu.active {
@@ -3439,6 +3441,89 @@ body {
     .wheel-content p {
         font-size: 0.85rem;
     }
+
+    /* Values Section Mobile */
+    .values-content-wrapper {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .values-header {
+        text-align: center;
+        padding-left: 0;
+    }
+
+    .values-header h2 {
+        font-size: 2rem;
+    }
+
+    /* Services Section Mobile */
+    .services-diagram {
+        min-height: 800px;
+        padding: var(--spacing-xl) 0;
+    }
+
+    .service-center {
+        width: 140px;
+        height: 140px;
+    }
+
+    .service-center-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.2rem;
+    }
+
+    .service-center-label {
+        font-size: 0.75rem;
+    }
+
+    .service-node {
+        width: 180px;
+        padding: var(--spacing-sm);
+    }
+
+    .service-node h3 {
+        font-size: 0.9rem;
+    }
+
+    .service-node p {
+        font-size: 0.75rem;
+    }
+
+    .service-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 0.75rem;
+    }
+
+    /* Channels Section Mobile */
+    .channels-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .channel-card {
+        padding: var(--spacing-md);
+    }
+
+    .channel-icon-circle {
+        width: 80px;
+        height: 80px;
+    }
+
+    .channel-icon-circle svg {
+        width: 40px;
+        height: 40px;
+    }
+
+    .channel-card h3 {
+        font-size: 0.95rem;
+    }
+
+    .channel-card p {
+        font-size: 0.85rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -3655,6 +3740,116 @@ body {
     }
 
     .why-card p {
+        font-size: 0.85rem;
+    }
+
+    /* Values Section Small Mobile */
+    .values-carousel-wrapper {
+        min-height: 400px;
+    }
+
+    .icon-cards {
+        max-width: 300px;
+        height: 350px;
+    }
+
+    .icon-cards__item {
+        width: 280px;
+        height: 340px;
+        margin-left: -140px;
+    }
+
+    .value-card-header {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .value-icon-box {
+        width: 60px;
+        height: 60px;
+    }
+
+    .value-icon {
+        font-size: 2rem;
+    }
+
+    .value-number {
+        font-size: 3rem;
+    }
+
+    .value-card-body {
+        padding: 0 1.5rem 1.5rem;
+    }
+
+    .value-card-body h3 {
+        font-size: 1.2rem;
+    }
+
+    .value-card-body p {
+        font-size: 0.85rem;
+    }
+
+    /* Services Section Small Mobile */
+    .services-diagram {
+        min-height: 900px;
+    }
+
+    .service-center {
+        width: 120px;
+        height: 120px;
+    }
+
+    .service-center-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    .service-node {
+        width: 160px;
+    }
+
+    .service-node h3 {
+        font-size: 0.85rem;
+    }
+
+    .service-node p {
+        font-size: 0.7rem;
+    }
+
+    .service-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Channels Section Small Mobile */
+    .channels-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .channel-icon-circle {
+        width: 70px;
+        height: 70px;
+    }
+
+    .channel-icon-circle svg {
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Footer Small Mobile */
+    .footer-about .btn {
+        width: 100%;
+        max-width: none;
+    }
+
+    .footer-contact-item svg {
+        width: 35px;
+        height: 35px;
+        padding: 7px;
+    }
+
+    .footer-contact-item {
         font-size: 0.85rem;
     }
 }
